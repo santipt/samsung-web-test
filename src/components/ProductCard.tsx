@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Carousel from './Carousel';
 import classNames from 'classnames';
 
@@ -8,33 +8,51 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
 
-    const colorOptions = item?.chipOptions.find(
-        (option: any) => option.fmyChipType === 'COLOR'
-    )?.optionList;
+    // Memoizing the options so they are only called when the item rerenders
+    const colorOptions = useMemo(() => {
+        return item?.chipOptions.find(
+            (option: any) => option.fmyChipType === 'COLOR'
+        )?.optionList;
+    }, [item]);
 
-    const memoryOptions = item?.chipOptions.find(
-        (option: any) => option.fmyChipType === 'MOBILE MEMORY'
-    )?.optionList;
+    const memoryOptions = useMemo(() => {
+        return item?.chipOptions.find(
+            (option: any) => option.fmyChipType === 'MOBILE MEMORY'
+        )?.optionList;
+    }, [item]);
 
-    const storageOptions = item?.chipOptions.find(
-        (option: any) => option.fmyChipType === 'PC STORAGE'
-    )?.optionList;
+    const storageOptions = useMemo(() => {
+        return item?.chipOptions.find(
+            (option: any) => option.fmyChipType === 'PC STORAGE'
+        )?.optionList;
+    }, [item]);
 
-    const sizeOptions = item?.chipOptions.find(
-        (option: any) => option.fmyChipType === 'TV SIZE'
-    )?.optionList;
+    const sizeOptions = useMemo(() => {
+        return item?.chipOptions.find(
+            (option: any) => option.fmyChipType === 'TV SIZE'
+        )?.optionList;
+    }, [item]);
 
     // Setting by default the first option
     const [selectedColor, setSelectedColor] = useState<string>(colorOptions ? colorOptions[0]?.optionCode : '');
     const [selectedMemory, setSelectedMemory] = useState<string>(memoryOptions ? memoryOptions[0]?.optionCode : '');
+    const [productImages, setProductImages] = useState<string[]>(item?.modelList[0]?.galleryImage || []);
 
     const handleSelectColor = (color: string) => {
-        setSelectedColor(color);
+        // Filtering the modelList by the color chip so I can get the correct gallery of images
+        const selectedModel = item.modelList.find((model: any) =>
+            model.fmyChipList.some((chip: any) => chip.fmyChipCode.toLowerCase() === color.toLowerCase() || chip.fmyChipName.toLowerCase() === color.toLowerCase())
+        );
+
+        if (selectedModel) {
+            setSelectedColor(color);
+            setProductImages(selectedModel.galleryImage);
+        }
     };
 
     return (
         <div className='max-w-sm h-90 rounded-xl overflow-hidden shadow-lg border-2 border-blue-custom'>
-            <Carousel images={item?.modelList[0]?.galleryImage} />
+            <Carousel images={productImages} />
             <div className='px-6 py-4'>
                 <div className='my-8'>
                     <div className='font-bold text-xl mb-2'>{item?.fmyEngName}</div>
