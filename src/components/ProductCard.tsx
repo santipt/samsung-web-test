@@ -25,7 +25,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
 
     return (
         <div className='max-w-sm h-90 rounded-xl overflow-hidden shadow-lg border-2 border-blue-custom'>
-            <img className='w-full' src={item?.modelList[0]?.galleryImage[0]} alt='Product' />
+            <Carousel images={item?.modelList[0]?.galleryImage} />
             <div className='px-6 py-4'>
                 <div>
                     <div className='font-bold text-xl mb-2'>{item?.fmyEngName}</div>
@@ -51,31 +51,31 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
                         </div>
                     ))}
                 </div>
-                <div className='flex space-x-2 m-2'>
+                <div className="flex space-x-2 m-2">
                     {memoryOptions?.map((memory: any) => (
                         <div
                             key={memory.optionName}
-                            className='p-4 rounded-2xl border-2 border-blue-custom flex items-center justify-center text-sm font-semibold text-gray-700'
+                            className="p-4 rounded-2xl border-2 border-blue-custom flex items-center justify-center text-sm font-semibold text-gray-700"
                         >
                             <span className='text-black'>{memory.optionName}</span>
                         </div>
                     ))}
                 </div>
-                <div className='flex space-x-2 m-2'>
+                <div className="flex space-x-2 m-2">
                     {storageOptions?.map((memory: any) => (
                         <div
                             key={memory.optionName}
-                            className='p-4 rounded-2xl border-2 border-red-400 flex items-center justify-center text-sm font-semibold text-gray-700'
+                            className="p-4 rounded-2xl border-2 border-red-400 flex items-center justify-center text-sm font-semibold text-gray-700"
                         >
                             <span className='text-black'>{memory.optionName}</span>
                         </div>
                     ))}
                 </div>
-                <div className='flex space-x-2 m-2'>
+                <div className="flex space-x-2 m-2">
                     {sizeOptions?.map((memory: any) => (
                         <div
                             key={memory.optionName}
-                            className='p-4 rounded-2xl border-2 border-red-400 flex items-center justify-center text-sm font-semibold text-gray-700'
+                            className="p-4 rounded-2xl border-2 border-red-400 flex items-center justify-center text-sm font-semibold text-gray-700"
                         >
                             <span className='text-black'>{memory.optionName}</span>
                         </div>
