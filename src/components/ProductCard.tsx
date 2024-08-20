@@ -12,6 +12,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
     // Memoizing the options so they are only called when the item rerenders
     // This is because the options are not always available
     // Getting all the options so we can show them in the ProductCard
+
+    // If I would have a more clear schema of the data I would change the logic so 
+    // it would be based on each model of the product.
+    // So I could identify which model is selected with the respective options
+    // and with that I could identify more information about the product
     const colorOptions = useMemo(() => {
         return item?.chipOptions.find(
             (option: any) => option.fmyChipType === 'COLOR'
