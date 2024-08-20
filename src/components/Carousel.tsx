@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import classNames from 'classnames';
 
 interface CarouselProps {
     images: string[];
@@ -17,17 +18,18 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
 
     return (
         <div id='default-carousel' className='relative w-full' data-carousel='slide'>
-            <div className='relative h-56 overflow-hidden rounded-lg md:h-96'>
+            <div className='relative h-60 overflow-hidden rounded-t-lg md:h-96'>
                 {images.map((image, index) => (
-                    <div
-                        key={index}
-                        className={`${index === activeIndex ? '' : 'hidden'
-                            } duration-700 ease-in-out`}
-                        data-carousel-item
-                    >
+                   <div
+                   key={index}
+                   className={classNames('duration-700 ease-in-out', {
+                       'hidden': index !== activeIndex,
+                   })}
+                   data-carousel-item
+               >
                         <img
                             src={image}
-                            className='absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2'
+                            className='absolute w-full h-full object-cover'
                             alt={`Slide ${index + 1}`}
                             loading='lazy'
                         />
@@ -58,13 +60,18 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
                     </svg>
                 </div>
             </button>
-            <div className='absolute z-30 flex -translate-x-1/2 bottom-0 left-1/2 space-x-3 rtl:space-x-reverse'>
+            <div className='absolute z-30 flex -translate-x-1/2 bottom-10 left-1/2 space-x-3 rtl:space-x-reverse'>
                 {images.map((_, index) => (
                     <button
                         key={index}
                         type='button'
-                        className={`w-3 h-3 rounded-full ${index === activeIndex ? 'bg-black' : 'bg-gray-300'
-                            }`}
+                        className={classNames(
+                            'w-2 h-2 rounded-full',
+                            {
+                                'bg-black': index === activeIndex,
+                                'bg-gray-300': index !== activeIndex,
+                            }
+                        )}
                         aria-current={index === activeIndex ? 'true' : 'false'}
                         aria-label={`Slide ${index + 1}`}
                         onClick={() => setActiveIndex(index)}
