@@ -5,25 +5,33 @@ import { Product } from '../../types/models';
 // Fetching the products from the API and setting the state from the response
 // There are 4 states: idle, loading, succeeded, failed
 // TO DO: Change 'any' to the correct type
-export const fetchProducts = createAsyncThunk<Product[] | any, void, { rejectValue: any }>(
+export const fetchProducts = createAsyncThunk<Product[] | any, void, { rejectValue: string }>(
     'products/fetchProductDetails',
     async (_, { rejectWithValue }) => {
         try {
             const data = await services.fetchProductDetails();
             return data;
         } catch (error) {
-            return rejectWithValue((error as Error).message || null);
+            return rejectWithValue((error as Error).message);
         }
     }
 );
 
+interface ProductsState {
+    products: Product[];
+    status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    error: string | null;
+}
+
+const initialState: ProductsState = {
+    products: [],
+    status: 'idle',
+    error: null,
+};
+
 export const productsSlice = createSlice({
     name: 'products',
-    initialState: {
-        products: [],
-        status: 'idle',
-        error: null,
-    },
+    initialState,
     reducers: {
         setProducts: (state, action) => {
             state.products = action.payload;
@@ -40,7 +48,7 @@ export const productsSlice = createSlice({
             })
             .addCase(fetchProducts.rejected, (state, action) => {
                 state.status = 'failed';
-                state.error = action.payload;
+                state.error = action.payload || 'Failed to fetch products';
             });
     },
 });

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { fetchProducts } from '../redux/slices/productsListSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../redux/store';
@@ -27,7 +27,7 @@ function Home() {
                     ))}
                 </div>
             )}
-            {status === 'error' &&
+            {error &&
                 <div className='bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-12'>
                     <p className='text-lg font-semibold'>Something went wrong.</p>
                     <p className='mt-2 text-base'>We’re working on it and will have it fixed as soon as possible. Please try again later.</p>

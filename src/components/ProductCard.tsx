@@ -1,14 +1,17 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import Carousel from './Carousel';
 import classNames from 'classnames';
+import { Product } from '../types/models';
 
 interface ProductCardProps {
-    item: any;
+    item: Product | any;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
 
     // Memoizing the options so they are only called when the item rerenders
+    // This is because the options are not always available
+    // Getting all the options so we can show them in the ProductCard
     const colorOptions = useMemo(() => {
         return item?.chipOptions.find(
             (option: any) => option.fmyChipType === 'COLOR'
@@ -46,6 +49,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
             model.fmyChipList.some((chip: any) => chip.fmyChipCode.toLowerCase() === color.toLowerCase() || chip.fmyChipName.toLowerCase() === color.toLowerCase())
         );
 
+        // If we find a model with the color chip, set the selected color and the product images
         if (selectedModel) {
             setSelectedColor(color);
             setProductImages(selectedModel.galleryImage);
